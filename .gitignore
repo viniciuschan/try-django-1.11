@@ -53,6 +53,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+local.py
 
 # Flask stuff:
 instance/
@@ -99,3 +100,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# db
+*.sqlite3
+*.sql
