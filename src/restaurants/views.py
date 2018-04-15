@@ -34,12 +34,3 @@ class RestaurantListView(ListView):
 class RestaurantDetailView(DetailView):
 	template_name = 'restaurants/restaurants_detail.html'
 	queryset = RestaurantLocation.objects.all()
-
-	# def get_context_data(self, *args, **kwargs):
-	# 	context = super(RestaurantDetailView, self).get_context_data(*args, **kwargs)
-	# 	return context
-
-	# def get_object(self, *args, **kwargs):
-	# 	rest_id = self.kwargs.get('rest_id')
-	# 	obj = get_object_or_404(RestaurantLocation, pk=rest_id)
-	# 	return obj
