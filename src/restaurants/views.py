@@ -10,35 +10,8 @@ from django.views.generic import (
 	DetailView,
 	CreateView,
 )
-
 from .forms import RestaurantLocationCreateForm
 from .models import RestaurantLocation
-
-@login_required()
-def restaurant_createview(request):
-	form = RestaurantLocationCreateForm(request.POST or None)
-	errors = None
-	if form.is_valid():
-		form.save()
-		return HttpResponseRedirect('/restaurants/')
-	if form.errors:
-		errors = form.errors
-
-	template_name = 'restaurants/form.html'
-	context = {
-		'form': form,
-		'errors': errors,
-		}
-	return render(request, template_name, context)
-
-
-def restaurant_listview(request,):
-	template_name = 'restaurants/restaurants_list.html'
-	queryset = RestaurantLocation.objects.all()
-	context = {
-		'object_list': queryset
-	}
-	return render(request, template_name, context)
 
 
 class RestaurantListView(ListView):
@@ -72,4 +45,3 @@ class RestaurantCreateView(LoginRequiredMixin, CreateView):
 		instance = form.save(commit=False)
 		instance.user = self.request.user
 		return super(RestaurantCreateView, self).form_valid(form)
-		
