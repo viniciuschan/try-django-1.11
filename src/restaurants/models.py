@@ -1,9 +1,11 @@
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 
 from .utils import unique_slug_generator
 from .validators import validate_country
 
+User = settings.AUTH_USER_MODEL
 
 class RestaurantLocation(models.Model):
 	BBK, JAPA, MEXICAN = 'ch', 'jp', 'mx'
@@ -12,6 +14,8 @@ class RestaurantLocation(models.Model):
 		(JAPA, 'Comida Japonesa'),
 		(MEXICAN, 'Comida Mexicana'),
 	)
+
+	user 		= models.ForeignKey(User)
 	name 		= models.CharField(max_length=120)
 	country		= models.CharField(max_length=120, null=True, blank=True)
 	location 	= models.CharField(max_length=120, null=True, blank=True)
