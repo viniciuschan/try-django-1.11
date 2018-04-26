@@ -9,6 +9,7 @@ from django.views.generic import (
 	ListView,
 	DetailView,
 	CreateView,
+	UpdateView,
 )
 from .forms import RestaurantLocationCreateForm
 from .models import RestaurantLocation
@@ -18,21 +19,16 @@ class RestaurantListView(ListView):
 	template_name = 'restaurants/restaurants_list.html'
 
 	def get_queryset(self):
-		slug = self.kwargs.get("slug")
-		if slug:
-			queryset = RestaurantLocation.objects.filter(
-					Q(category__iexact=slug) |
-					Q(category__icontains=slug)
-				)
-		else:
-			queryset = RestaurantLocation.objects.all()
+		return RestaurantLocation.objects.filter(user=self.request.user)
 
-		return queryset
 
 
 class RestaurantDetailView(DetailView):
 	template_name = 'restaurants/restaurants_detail.html'
-	queryset = RestaurantLocation.objects.all()
+
+	def get_queryset(self):
+		return RestaurantLocation.objects.filter(user=self.request.user)
+
 
 
 class RestaurantCreateView(LoginRequiredMixin, CreateView):
@@ -50,3 +46,16 @@ class RestaurantCreateView(LoginRequiredMixin, CreateView):
 		context = super(RestaurantCreateView, self).get_context_data(*args, **kwargs)
 		context['title'] = 'Add Restaurant'
 		return context
+
+
+class RestaurantUpdateView(LoginRequiredMixin, CreateView):
+	form_class = RestaurantLocationCreateForm
+	template_name = 'form.html'
+	
+	def get_context_data(self, *args, **kwargs):
+		context = super(RestaurantUpdateView, self).get_context_data(*args, **kwargs)
+		context['title'] = 'Edit Restaurant'
+		return context
+
+	def get_queryset(self):
+		return RestaurantLocation.objects.filter(user=self.request.user)	
